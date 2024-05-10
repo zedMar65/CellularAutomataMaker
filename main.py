@@ -12,7 +12,7 @@ if __name__ == "__main__":
     # screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     # pygame.display.set_caption("Automata")
     Game = grid.Grid(2, 3, 3, BOX_SIZE, TILE_SIZE)
-    
+    print("HAHA")
     
     Game.set(1, 2)
     Game.set(2, 2)
