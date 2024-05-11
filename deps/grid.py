@@ -2,7 +2,9 @@
 class Grid:
     def __init__(self, minTh, maxTh, borTh, BOX_SIZE, TILE_SIZE):
         # set grid and the min and max amount of cells around for the cell to stay alive
-        self.grid = [[0 for _ in range(int(BOX_SIZE/TILE_SIZE))] for _ in range(int(BOX_SIZE/TILE_SIZE))]
+        self.size = int(BOX_SIZE/TILE_SIZE)
+        self.newGrid = [[0 for _ in range(self.size)] for _ in range(self.size)]
+        self.grid = self.newGrid
         self.minTh = minTh
         self.maxTh = maxTh
         self.borTh = borTh
@@ -14,8 +16,7 @@ class Grid:
     # simulate 1 itteration for the game of life
     def simulate(self):
         # set variables
-        newGrid = self.grid
-        Grid = self.grid
+        GRID = self.grid
         usedCells = []
         # lol
         reincarnate = []
@@ -28,36 +29,32 @@ class Grid:
                     # child cell
                     x = mothercell[0]-1+i
                     y = mothercell[1]-1+j
-                    if x >= 0 and x < len(Grid) and y >= 0 and y < len(Grid):
+                    if x >= 0 and x < len(GRID) and y >= 0 and y < len(GRID):
                         cell = (x, y)
                         if cell in usedCells:
                             pass
                         else:
-                            summ = 0-Grid[x][y]
+                            summ = 0-GRID[x][y]
                             usedCells.append(cell)
                             for k in range(3):
                                 for l in range(3):
                                     Cx = x-1+k
                                     Cy = y-1+l
-                                    if Cx >= 0 and Cx < len(Grid) and Cy >= 0 and Cy < len(Grid):
-                                        print((Cx, Cy), Grid[Cx][Cy])
-                                        summ += Grid[Cx][Cy]
-                            print(x, y, summ)
-                            if Grid[x][y]:
-                                if summ > self.minTh and summ < self.maxTh:
+                                    if Cx >= 0 and Cx < len(GRID) and Cy >= 0 and Cy < len(GRID):
+                                        summ += GRID[Cx][Cy]
+                            if GRID[x][y]:
+                                if summ >= self.minTh and summ <= self.maxTh:
                                     reincarnate.append(cell)
-                                    newGrid[x][y] = 1
-                                else:
-                                    newGrid[x][y] = 0
                             else:
                                 if summ == 3:
                                     reincarnate.append(cell)
-                                    newGrid[x][y] = 0
-                                else:
-                                    newGrid[x][y] = 0
-        self.grid = newGrid
+        
+        # restart grid and cells becouse of python toombfoolery:
+        self.grid = [[0 for _ in range(self.size)] for _ in range(self.size)]
+        for cell in reincarnate:
+            self.grid[cell[0]][cell[1]] = 1
         self.cells = reincarnate
-        return newGrid
+        return self.cells
     # function to print the grid to console
     def print(self):
         printMap = ""
