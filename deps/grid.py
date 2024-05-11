@@ -11,8 +11,12 @@ class Grid:
         self.cells = []
     # set x and y cell to alive
     def set(self, x, y):
-        self.grid[x-1][y-1] = 1
-        self.cells.append((x-1, y-1))
+        if (x-1, y-1) in self.cells:
+            self.cells.remove((x-1, y-1))
+            self.grid[x-1][y-1] = 0
+        else:
+            self.grid[x-1][y-1] = 1
+            self.cells.append((x-1, y-1))
     # simulate 1 itteration for the game of life
     def simulate(self):
         # set variables
